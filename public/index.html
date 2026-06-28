@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Weather Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <style>html,body{background:#0d1117}</style>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <div class="control-panel" id="control-panel">
+    <div class="panel-title-row">
+      <div class="panel-title">🌍 World Weather Map</div>
+      <button class="owm-credit-btn" id="owm-credit-btn">このデータはOpenWeatherMapから取得しました</button>
+    </div>
+    <div class="panel-selects">
+      <select id="country-select"><option value="">国を選択...</option></select>
+      <select id="city-select" disabled><option value="">都市を選択...</option></select>
+    </div>
+  </div>
+
+  <div class="latlon-panel" id="latlon-panel">
+    <span class="latlon-label">📍 緯度・経度</span>
+    <input id="input-lat" type="number" placeholder="緯度 (例: 35.68)" min="-90"  max="90"  step="0.0001">
+    <input id="input-lon" type="number" placeholder="経度 (例: 139.65)" min="-180" max="180" step="0.0001">
+    <button id="btn-pin">表示</button>
+  </div>
+
+  <!-- OpenWeatherMap 説明モーダル -->
+  <div class="owm-modal-overlay hidden" id="owm-modal-overlay">
+    <div class="owm-modal">
+      <button class="owm-modal-close" id="owm-modal-close">✕</button>
+      <h2 class="owm-modal-title">OpenWeatherMap について</h2>
+      <p class="owm-modal-lead">このアプリの天気データはすべて <strong>OpenWeatherMap</strong> のAPIから取得しています。</p>
+      <div class="owm-modal-section">
+        <h3>OpenWeatherMap とは</h3>
+        <p>OpenWeatherMap（OWM）は2012年に設立された気象データプロバイダーで、世界中の気象観測所・衛星・レーダーから収集したデータをAPIで提供しています。個人・企業を問わず広く利用されています。</p>
+      </div>
+      <div class="owm-modal-section">
+        <h3>提供されるデータ</h3>
+        <ul>
+          <li>気温・体感温度・湿度・気圧</li>
+          <li>風速・風向・突風</li>
+          <li>雲量・視程・降水量・降雪量</li>
+          <li>日の出・日の入り時刻</li>
+          <li>天気の概況（晴れ・雨・雪 など）</li>
+        </ul>
+      </div>
+      <div class="owm-modal-section">
+        <h3>無料プランの制限</h3>
+        <ul>
+          <li>1分あたり最大 <strong>60 リクエスト</strong></li>
+          <li>1日あたり最大 <strong>1,000 リクエスト</strong></li>
+          <li>データは <strong>10〜15分</strong> ごとに更新</li>
+        </ul>
+      </div>
+      <a class="owm-modal-link" href="https://openweathermap.org" target="_blank" rel="noopener">openweathermap.org を開く →</a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script src="countries.js"></script>
+  <script src="cities.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

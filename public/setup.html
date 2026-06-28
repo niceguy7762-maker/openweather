@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セットアップ – World Weather Map</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #0d1117;
+      font-family: 'Hiragino Sans', 'Yu Gothic UI', system-ui, sans-serif;
+      color: #cfd8dc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(77,208,225,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(100,150,255,0.05) 0%, transparent 50%);
+    }
+
+    .container { width: 100%; max-width: 680px; }
+
+    .logo { text-align: center; margin-bottom: 36px; }
+    .logo h1 { font-size: 26px; font-weight: 800; color: #4dd0e1; letter-spacing: -0.5px; }
+    .logo p  { color: #546e7a; font-size: 14px; margin-top: 8px; }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(77,208,225,0.18);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 15px; font-weight: 700; color: #4dd0e1;
+      margin-bottom: 22px;
+    }
+
+    /* ── ステップリスト ── */
+    .steps { display: flex; flex-direction: column; gap: 16px; }
+    .step  { display: flex; gap: 14px; align-items: flex-start; }
+    .step-num {
+      width: 28px; height: 28px;
+      background: rgba(77,208,225,0.12);
+      border: 1px solid rgba(77,208,225,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #4dd0e1;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-body { flex: 1; font-size: 14px; line-height: 1.7; }
+    .step-body strong { display: block; color: #e0f7fa; margin-bottom: 3px; }
+    .step-body span   { color: #90a4ae; }
+    .step-body a      { color: #4dd0e1; text-decoration: none; }
+    .step-body a:hover { text-decoration: underline; }
+
+    .tag {
+      display: inline-block;
+      background: rgba(77,208,225,0.12);
+      border: 1px solid rgba(77,208,225,0.3);
+      color: #4dd0e1;
+      font-size: 11px; font-weight: 600;
+      padding: 1px 8px; border-radius: 6px; margin: 0 2px;
+    }
+
+    .sub-list {
+      list-style: none; margin: 8px 0;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .sub-list li {
+      font-size: 13px; color: #78909c;
+      padding-left: 10px;
+      border-left: 2px solid rgba(77,208,225,0.2);
+    }
+    .sub-list code {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #90a4ae;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 11px; padding: 1px 6px; border-radius: 4px;
+    }
+
+    .note {
+      margin-top: 18px; padding: 12px 16px;
+      background: rgba(255,193,7,0.07);
+      border: 1px solid rgba(255,193,7,0.2);
+      border-radius: 10px;
+      font-size: 13px; color: #ffc107; line-height: 1.6;
+    }
+
+    /* ── .env 設定カード ── */
+    .env-steps { display: flex; flex-direction: column; gap: 22px; }
+    .env-step  { font-size: 14px; color: #90a4ae; line-height: 1.7; }
+    .env-step strong { color: #e0f7fa; display: block; margin-bottom: 6px; }
+
+    .inline-code {
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #90a4ae; font-size: 12px;
+      padding: 2px 7px; border-radius: 4px;
+    }
+
+    .code-block {
+      background: #111927;
+      border: 1px solid rgba(77,208,225,0.2);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 13px;
+      margin-top: 10px;
+      position: relative;
+      line-height: 1.8;
+    }
+    .c  { color: #37474f; }
+    .k  { color: #b0bec5; }
+    .v  { color: #4dd0e1; }
+
+    .copy-btn {
+      position: absolute; top: 10px; right: 12px;
+      background: rgba(77,208,225,0.1);
+      border: 1px solid rgba(77,208,225,0.25);
+      color: #4dd0e1; font-size: 11px;
+      padding: 3px 10px; border-radius: 6px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .copy-btn:hover { background: rgba(77,208,225,0.2); }
+
+    .done-note {
+      margin-top: 18px; padding: 14px 16px;
+      background: rgba(77,208,225,0.05);
+      border: 1px solid rgba(77,208,225,0.2);
+      border-radius: 10px;
+      font-size: 13px; color: #80cbc4; line-height: 1.8;
+    }
+    .done-note strong { color: #4dd0e1; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="logo">
+    <h1>🌍 World Weather Map</h1>
+    <p>OpenWeatherMap の API キーが設定されていません。以下の手順で設定してください。</p>
+  </div>
+
+  <!-- ── ステップ1：APIキー取得 ── -->
+  <div class="card">
+    <div class="card-title">📋 ステップ 1 — API キーを取得する（無料・5分）</div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>OpenWeatherMap にアクセス</strong>
+          <span><a href="https://openweathermap.org" target="_blank" rel="noopener">openweathermap.org</a> を開き、右上の <span class="tag">Sign Up</span> をクリックします。</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>登録フォームを入力して「Create Account」</strong>
+          <ul class="sub-list">
+            <li><code>Username</code> — 任意のユーザー名（英数字）</li>
+            <li><code>Enter email</code> — メールアドレス</li>
+            <li><code>Password / Repeat Password</code> — パスワード（8文字以上）</li>
+            <li>利用規約の同意チェックボックス（2つ）に ✓ を入れる</li>
+          </ul>
+          <span>入力後、<span class="tag">Create Account</span> ボタンをクリック。</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>用途アンケートが表示されたら</strong>
+          <span>「How and where will you use our API data?」という画面が出ます。<br>
+          個人利用なら <span class="tag">Other</span> → <span class="tag">Save</span>、または <span class="tag">Cancel</span> でスキップしてかまいません。</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>確認メールを開いて認証</strong>
+          <span>「Please verify your email」メールが届きます。<br>
+          <span class="tag">Verify Email</span> ボタンをクリックして認証を完了してください。</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>My API keys を開く</strong>
+          <span>ログイン後、右上の <strong style="color:#b0bec5">ユーザー名</strong> をクリック →<br>
+          メニューの <span class="tag">My API keys</span> を選択。</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>API キーをコピー</strong>
+          <span>「<strong style="color:#b0bec5">Default</strong>」という名前の 32文字の英数字キーが表示されています。<br>
+          コピーして次のステップで使用します。</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="note">
+      ⏱ 新規登録直後は API キーが有効になるまで最大 <strong>2 時間</strong> かかる場合があります。
+    </div>
+  </div>
+
+  <!-- ── ステップ2：.env に記述 ── -->
+  <div class="card">
+    <div class="card-title">📝 ステップ 2 — .env ファイルに API キーを記述する</div>
+    <div class="env-steps">
+
+      <div class="env-step">
+        <strong>プロジェクトの .env ファイルを開く</strong>
+        プロジェクトのルートフォルダにある <span class="inline-code">.env</span> ファイルをテキストエディタで開いてください。
+      </div>
+
+      <div class="env-step">
+        <strong>コピーしたキーを貼り付けて保存する</strong>
+        <span class="inline-code">your_key_here</span> の部分を取得した API キーに書き換えてください。
+        <div class="code-block">
+          <button class="copy-btn" id="copy-btn" onclick="copyEnv()">コピー</button>
+          <span class="c"># OpenWeatherMap API キー</span><br>
+          <span class="k">OPENWEATHER_API_KEY</span>=<span class="v">your_key_here</span>
+        </div>
+      </div>
+
+      <div class="env-step">
+        <strong>サーバーを再起動する</strong>
+        .env を保存したら、ターミナルでサーバーを再起動してください。
+        <div class="code-block">
+          <span class="c"># ① 実行中のサーバーを止める</span><br>
+          <span class="c">#    ターミナルで Ctrl+C が効く場合はそれで止める</span><br>
+          <span class="c">#    効かない場合は以下のコマンドで強制終了</span><br>
+          <span class="k">kill</span> <span class="v">$(lsof -ti :3000)</span><br><br>
+          <span class="c"># ② 再起動</span><br>
+          <span class="k">npm</span> <span class="v">start</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="done-note">
+      ✅ サーバーを再起動すると、このページの代わりに<strong>地図画面</strong>が表示されます。<br>
+      ブラウザで <strong>http://localhost:3000</strong> を再度開いてください。
+    </div>
+  </div>
+
+</div>
+<script>
+  function copyEnv() {
+    navigator.clipboard.writeText('OPENWEATHER_API_KEY=your_key_here').then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = 'コピーしました ✓';
+      setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
